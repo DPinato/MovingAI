@@ -13,6 +13,9 @@ int main(int argc, char *argv[]) {
 	cout << "MovingAI started" << endl;
 
 
+	// make a map
+	Map *testMap = new Map();
+
 
 
 

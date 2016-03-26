@@ -11,9 +11,16 @@
 
 #include <iostream>
 
+#include "Map.h"
+#include "AIBrain.h"
+
+
 using namespace std;
 
 
+// class declaration
+class Map;
+class AIBrain;
 
 
 
