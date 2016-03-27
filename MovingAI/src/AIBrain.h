@@ -8,6 +8,8 @@
 #ifndef SRC_AIBRAIN_H_
 #define SRC_AIBRAIN_H_
 
+#include "MovingAI.h"
+
 class AIBrain {
 public:
 	AIBrain();

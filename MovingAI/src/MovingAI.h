@@ -10,12 +10,15 @@
 
 
 #include <iostream>
-
-#include "Map.h"
-#include "AIBrain.h"
+#include <fstream>
+#include <string>
+#include <cstdint>
 
 
 using namespace std;
+
+#include "Map.h"
+#include "AIBrain.h"
 
 
 // class declaration

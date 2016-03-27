@@ -8,27 +8,52 @@
 #ifndef SRC_MAP_H_
 #define SRC_MAP_H_
 
+#include "MovingAI.h"
+
 class Map {
 public:
 	Map();
 	virtual ~Map();
 
 
-	// functions
-	bool generateBinaryMap();
-	bool generateBinaryMap(int xSize = this->binX, int ySize = this->binY);
-
+	// generic functions
 
 	// set
-	void setBinarySize(int xS, int yS);
+	void setMapSeed(int s);
 
 	// get
+	int getMapSeed();
+
+
+	//////////////////////////////
+
+	// functions for binary maps
+	bool generateBinaryMap();
+	bool printMapPNG(string file);
+
+	// set for binary maps
+	void setBinarySize(int xS, int yS);
+
+	// get for binary maps
 	int getBinarySizeX();
 	int getBinarySizeY();
 
+	//////////////////////////////
+
+
+
+	// debug functions
+	void showBinaryMap();
+
+
+	//////////////////////////////
+
 
 private:
+	int seed;				// seed for random map
+
 	int binX, binY;		// sizes for the array for binary map
+	int *binaryMap;
 
 
 };
