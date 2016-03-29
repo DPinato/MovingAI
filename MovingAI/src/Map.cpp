@@ -31,7 +31,7 @@ bool Map::generateBinaryMap() {
 
 	cout << "\tSizes binX: " << binX << "\tbinY: " << binY << endl;
 	cout << (binX*binY) / 8.0 << "\tBytes" << endl;
-	cout << (int)ceil((binX*binY) / 8.0) << "\tBytes" << endl;
+	cout << (int)ceil((binX*binY) / 8.0) << "\tBytes (ceil)" << endl;
 
 	binaryMap = new (nothrow) int [binX*binY];
 	binaryPixMap = new (nothrow) uint8_t [(int)ceil((binX*binY) / 8.0)];
@@ -52,31 +52,27 @@ bool Map::generateBinaryMap() {
 
 	// fill binaryPixMap
 	for (int i = 0; i < (int)ceil((binX*binY) / 8.0); i++) {
-		cout << i;
+		//cout << i;
 		binaryPixMap[i] = 0x00;		// initialise value
 
 		int diff = binY*binX - i*8;		// see if a full Byte still needs to put in binaryPixMap
 		if (diff < 8) {
-			cout << "\tPART";
+			//cout << "\tPART";
 			for (int j = 0; j < diff; j++) {
-				cout << "\t" << hex << ((binaryMap[i*8 + j] & 0x1) << (7- j));
+				//cout << "\t" << hex << ((binaryMap[i*8 + j] & 0x1) << (7- j));
 				binaryPixMap[i] += ((binaryMap[i*8 + j] & 0x1) << (7 - j));		// get the single bit value, shift it to the left accordingly
 			}
 
 		} else {
 			// do the full Byte
-			cout << "\tFULL";
+			//cout << "\tFULL";
 			for (int j = 0; j < 8; j++) {
-				cout << "\t" << hex << ((binaryMap[i*8 + j] & 0x1) << (7- j));
-
+				//cout << "\t" << hex << ((binaryMap[i*8 + j] & 0x1) << (7- j));
 				binaryPixMap[i] += ((binaryMap[i*8 + j] & 0x1) << (7- j));		// get the single bit value, shift it to the left accordingly
-
 			}
 
 		}
-
-		cout << "\t\t" << hex << (int)binaryPixMap[i];
-		cout << "\n";
+		//cout << "\n";
 	}
 
 
@@ -113,6 +109,7 @@ bool Map::printMapPNG(string file) {
 
 	ofstream write(file.c_str(), ios::binary);
 
+
 	if (write.is_open()) {
 		char head[12] = {0x89, 0x50, 0x4E, 0x47,
 									0x0D, 0x0A, 0x1A, 0x0A,
@@ -147,9 +144,9 @@ bool Map::printMapPNG(string file) {
 		write.write(headIDAT, 4);
 
 		// put the image pixels here
-		char pix[8] = {0xFF, 0xFF, 0xFF, 0xFF,
-								0xFF, 0xFF, 0xFF, 0xFF};
-		write.write(pix, 8);
+		//char pix[8] = {0xFF, 0xFF, 0xFF, 0xFF,
+		//						0xFF, 0xFF, 0xFF, 0xFF};
+		//write.write(pix, 8);
 
 
 
@@ -160,6 +157,7 @@ bool Map::printMapPNG(string file) {
 		char headIEND[4] = {0x49, 0x45, 0x4E, 0x44};
 		//char crc = {0xAE, 0x42, 0x60, 0x82};
 		write.write(headIEND, 4);
+
 
 
 		write.close();
