@@ -18,11 +18,16 @@ public:
 
 	// functions
 
+	// set
+
+	// get
+	int getXPos();
+	int getYPos();
 
 
 
 private:
-
+	int xPos, yPos;	// current x and y position in the map
 
 
 };

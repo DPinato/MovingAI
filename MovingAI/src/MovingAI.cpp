@@ -15,15 +15,17 @@ int main(int argc, char *argv[]) {
 
 	// make a map
 	Map *testMap = new Map();
-	testMap->setMapSeed(0);
-	testMap->setBinarySize(300, 300);
+	testMap->setMapSeed(123);
+	testMap->setBinarySize(6, 7);
 	testMap->generateBinaryMap();
 	testMap->printMapPNG("/Users/davide/Desktop/test.png");
 
 
 
-
-	//testMap->showBinaryMap();
+	cout << "\n";
+	testMap->showBinaryMap();
+	cout << "\n";
+	testMap->showBinaryPixMap();
 
 	cout << "\n\n";
 	cout << "MovingAI ended" << endl;

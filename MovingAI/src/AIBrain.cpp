@@ -16,3 +16,10 @@ AIBrain::~AIBrain() {
 	// TODO Auto-generated destructor stub
 }
 
+int AIBrain::getXPos() {
+	return xPos;
+}
+
+int AIBrain::getYPos() {
+	return yPos;
+}

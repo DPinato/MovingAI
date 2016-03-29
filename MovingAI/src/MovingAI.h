@@ -13,6 +13,7 @@
 #include <fstream>
 #include <string>
 #include <cstdint>
+#include <cmath>
 
 
 using namespace std;

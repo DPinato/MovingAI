@@ -44,7 +44,7 @@ public:
 
 	// debug functions
 	void showBinaryMap();
-
+	void showBinaryPixMap();
 
 	//////////////////////////////
 
@@ -53,7 +53,8 @@ private:
 	int seed;				// seed for random map
 
 	int binX, binY;		// sizes for the array for binary map
-	int *binaryMap;
+	int *binaryMap;				// values from the random binary map generation
+	uint8_t *binaryPixMap;	// pixels for the image, grouped by Byte
 
 
 };

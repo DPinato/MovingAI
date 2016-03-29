@@ -30,20 +30,53 @@ bool Map::generateBinaryMap() {
 	}
 
 	cout << "\tSizes binX: " << binX << "\tbinY: " << binY << endl;
+	cout << (binX*binY) / 8.0 << "\tBytes" << endl;
+	cout << (int)ceil((binX*binY) / 8.0) << "\tBytes" << endl;
 
 	binaryMap = new (nothrow) int [binX*binY];
-	if (binaryMap == nullptr) {
+	binaryPixMap = new (nothrow) uint8_t [(int)ceil((binX*binY) / 8.0)];
+	if (binaryMap == nullptr || binaryPixMap == nullptr) {
 		cout << "Could not allocate memory for binaryMap" << endl;
 		return false;
 	}
 
 
-	// populate binaryMap
+	// generate random binary map
 	for (int iX = 0; iX < binX; iX++) {
 		for (int iY = 0; iY < binY; iY++) {
 			binaryMap[iX*binY + iY] = rand()%2;
+		}
+	}
+
+
+
+	// fill binaryPixMap
+	for (int i = 0; i < (int)ceil((binX*binY) / 8.0); i++) {
+		cout << i;
+		binaryPixMap[i] = 0x00;		// initialise value
+
+		int diff = binY*binX - i*8;		// see if a full Byte still needs to put in binaryPixMap
+		if (diff < 8) {
+			cout << "\tPART";
+			for (int j = 0; j < diff; j++) {
+				cout << "\t" << hex << ((binaryMap[i*8 + j] & 0x1) << (7- j));
+				binaryPixMap[i] += ((binaryMap[i*8 + j] & 0x1) << (7 - j));		// get the single bit value, shift it to the left accordingly
+			}
+
+		} else {
+			// do the full Byte
+			cout << "\tFULL";
+			for (int j = 0; j < 8; j++) {
+				cout << "\t" << hex << ((binaryMap[i*8 + j] & 0x1) << (7- j));
+
+				binaryPixMap[i] += ((binaryMap[i*8 + j] & 0x1) << (7- j));		// get the single bit value, shift it to the left accordingly
+
+			}
 
 		}
+
+		cout << "\t\t" << hex << (int)binaryPixMap[i];
+		cout << "\n";
 	}
 
 
@@ -96,9 +129,9 @@ bool Map::printMapPNG(string file) {
 		write.write(headIHDR2, 4);
 
 		char headIHDR3 = 0x01;	// bit depth, 1
-		char headIHDR4 = 0x00;	// coour type, greyscale
+		char headIHDR4 = 0x00;	// colour type, greyscale
 		char headIHDR5 = 0x00;	// compression method, default
-		char headIHDR6 = 0x00;	// filter method, default
+		char headIHDR6 = 0x00;	// filter method, default 0
 		char headIHDR7 = 0x00;	// interlace method, no interlace
 		write.write(&headIHDR3, 1);
 		write.write(&headIHDR4, 1);
@@ -110,10 +143,23 @@ bool Map::printMapPNG(string file) {
 		// PLTE chunk, not here because colour type 0
 
 		// IDAT chunk, image data
+		char headIDAT[4] = {0x49, 0x44, 0x41, 0x54};
+		write.write(headIDAT, 4);
+
+		// put the image pixels here
+		char pix[8] = {0xFF, 0xFF, 0xFF, 0xFF,
+								0xFF, 0xFF, 0xFF, 0xFF};
+		write.write(pix, 8);
+
+
+
+
 //		write << 0x49444154;	// IDAT
 
 		// IEND chunk
-//		write << 0x49454E44;
+		char headIEND[4] = {0x49, 0x45, 0x4E, 0x44};
+		//char crc = {0xAE, 0x42, 0x60, 0x82};
+		write.write(headIEND, 4);
 
 
 		write.close();
@@ -128,11 +174,17 @@ bool Map::printMapPNG(string file) {
 }
 
 void Map::showBinaryMap() {
-	for (int iX = 0; iX < binX; iX++) {
-		for (int iY = 0; iY < binY; iY++) {
-			cout << binaryMap[iX*binY + iY] << "\t";
-		}
-		cout << "\n";
+	for (int i = 0; i < binX*binY; i++) {
+		if (i%8 == 0) { cout << "\n"; }
+		cout << hex << binaryMap[i] << "\t";
+	}
+
+}
+
+void Map::showBinaryPixMap() {
+	for (int i = 0; i < (int)ceil((binX*binY) / 8.0); i++) {
+		if (i%8 == 0) { cout << "\n"; }
+		cout << hex << (int)binaryPixMap[i] << "\t";
 	}
 
 }
